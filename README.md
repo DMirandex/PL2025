@@ -5,10 +5,8 @@
 
 <h3 align="center">Licenciatura em Engenharia Informática <br> Trabalhos de casa de Processamento de Linguagens <br> 2024/2025 </h3>
 
-<h3 align="center"> Autor :floppy_disk: </h2>
 <p align="center">
-<img src="![image](https://github.com/user-attachments/assets/f0ea2133-628b-4dff-a6f2-2329fc2cee1f)
-" width="10%" />
+<img src="" width="10%" />
 </p>
 
 <div align="center">
