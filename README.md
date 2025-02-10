@@ -1,4 +1,4 @@
-# PL2025
+
 <p align="center">
   <img src='https://upload.wikimedia.org/wikipedia/commons/9/93/EEUMLOGO.png' width="20%" />
 </p>
@@ -12,8 +12,8 @@
 <div align="center">
   
 ## Aluno
- Nome: Diogo Gabriel Lopes Miranda
- Número Aluno: A100839
- E-mail: a100839@alunos.uminho.pt
+- Nome: Diogo Gabriel Lopes Miranda
+* Número Aluno: A100839
++ E-mail: a100839@alunos.uminho.pt
 
 </div>
