@@ -6,7 +6,7 @@
 <h3 align="center">Licenciatura em Engenharia Informática <br> Trabalhos de casa de Processamento de Linguagens <br> 2024/2025 </h3>
 
 <p align="center">
-<img src="" width="10%" />
+<img src="./Photo.png" width="10%" />
 </p>
 
 <div align="center">
