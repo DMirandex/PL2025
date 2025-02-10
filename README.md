@@ -12,8 +12,8 @@
 <div align="center">
   
 ## Aluno
-- Nome: Diogo Gabriel Lopes Miranda
-* Número Aluno: A100839
-+ E-mail: a100839@alunos.uminho.pt
+ Nome: Diogo Gabriel Lopes Miranda
+ Número Aluno: A100839
+ E-mail: a100839@alunos.uminho.pt
 
 </div>
