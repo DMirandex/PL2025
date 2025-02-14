@@ -1,6 +1,6 @@
 # Somador On/Off
 
-Este projeto implementa um somador que processa números em um texto, ativando ou desativando a soma com os comandos `On` e `Off`.
+Este programa implementa um somador que processa números em um texto, com a soma ficando ativa ou desligada quando o programa encotra os comandos `On` e `Off`, no input.
 
 ## Como funciona
 - Os números encontrados no texto são somados quando o modo está ativado.
@@ -23,7 +23,7 @@ Este projeto implementa um somador que processa números em um texto, ativando o
 
 ## Exemplo de saída
 ```
-235 247
+235 247 247
 ```
 
 
