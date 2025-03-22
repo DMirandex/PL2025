@@ -54,10 +54,10 @@ Operação: LISTAR
 Operação: MOEDA 2e,50c
 Saldo = 2e50c
 
-Operação: SELECIONAR A1
-Pode retirar o produto dispensado "Água"
+Operação: SELECIONAR A10
+Pode retirar o produto dispensado "sumol"
 
 Operação: SAIR
-Pode retirar o troco: 2x 1e.
+Pode retirar o troco: 1e.
 Até à próxima!
 ```
