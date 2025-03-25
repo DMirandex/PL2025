@@ -19,13 +19,13 @@ O projeto contém os seguintes ficheiros:
 
 ## Como Utilizar
 
-Executa o ficheiro `calc_yacc.py` para testar expressões matemáticas:
+Execute o ficheiro `calc_yacc.py` para testar expressões matemáticas:
 
 ```bash
 python calc_yacc.py
 ```
 
-Exemplo de entrada e saída:
+## Output
 
 ```
 Resultado de '2+3': 5
