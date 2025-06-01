@@ -7,7 +7,7 @@
 </p>
 
 <h3 align="center">Licenciatura em Engenharia Informática <br> Processamento de Linguagens <br> 2024/2025 </h3>
-<h3 align="center"> Grupo 17 </h3>
+<h3 align="center">Grupo 17 </h3>
 
 <h3 align="center"> Autores 🤝 </h3>
 
@@ -799,7 +799,6 @@ elif isinstance(node, ReadLnStmtNode):
             code.append("STOREN")
     
     elif isinstance(node, WriteStmtNode):
-        # write(...) — output_args deve sempre existir
         for item in node.output_args.items:
             val = item.value
             if isinstance(val, VariableNode):
@@ -807,8 +806,8 @@ elif isinstance(node, ReadLnStmtNode):
                 if val.index is None:
                     code.append(f"PUSHG {info['offset']}")
                 else:
-                    code.append(f"PUSHG {info['offset']}")            # empilha o endereço base do array
-                    code.extend(generate_code(val.index, symbol_table))  # avalia o índice
+                    code.append(f"PUSHG {info['offset']}")           
+                    code.extend(generate_code(val.index, symbol_table))  
                     code.append("LOADN")                  
                 # escolhe WRITEI/WRITEF/WRITES
                 t = info["elem_type"] if val.index is not None else info["type"]
@@ -823,7 +822,6 @@ elif isinstance(node, ReadLnStmtNode):
                 code.append("WRITES")
 
     elif isinstance(node, WriteLnStmtNode):
-        # writeln(...) — output_args pode ser None (\n quando vazio)
         if node.output_args is not None:
             for item in node.output_args.items:
                 val = item.value
@@ -832,8 +830,8 @@ elif isinstance(node, ReadLnStmtNode):
                     if val.index is None:
                         code.append(f"PUSHG {info['offset']}")
                     else:
-                        code.append(f"PUSHG {info['offset']}")            # empilha o endereço base do array
-                        code.extend(generate_code(val.index, symbol_table))  # avalia o índice
+                        code.append(f"PUSHG {info['offset']}")           
+                        code.extend(generate_code(val.index, symbol_table))  
                         code.append("LOADN")                  
                     t = info["elem_type"] if val.index is not None else info["type"]
                     if t in ("integer", "boolean"):
@@ -936,7 +934,6 @@ Nesta secção, foram tratados vários tipos de nós que representam operações
 ```python
 # ------------------- Expressões -------------------
     elif isinstance(node, BinOpNode):
-        # gera código para filhos (stack machine)
         code.extend(generate_code(node.left, symbol_table))
         code.extend(generate_code(node.right, symbol_table))
         # depois operador
@@ -976,10 +973,8 @@ Nesta secção, foram tratados vários tipos de nós que representam operações
         code.append(f"PUSHF {node.value}")
 
     elif isinstance(node, StringNode):
-        # empilha no String Heap
         code.append(f'PUSHS "{node.value}"')
-        # se for literal de 1 char, converte para código inteiro:
-        if len(node.value) == 1: # TODO VER ESTE COMENTÁRIO MANHOSO
+        if len(node.value) == 1:
             code.append("CHRCODE")
 
     elif isinstance(node, BoolNode):
@@ -987,10 +982,7 @@ Nesta secção, foram tratados vários tipos de nós que representam operações
         code.append(f"PUSHI {1 if node.value else 0}")
 
     elif isinstance(node, LengthNode):
-        # length(expr)
-        # empilha expr
         code.extend(generate_code(node.expr, symbol_table))
-        # depois a instrução certa
         # se for string → STRLEN, se for array → PUSHI size
         if isinstance(node.expr, VariableNode):
             info = symbol_table[node.expr.id]
@@ -1012,11 +1004,11 @@ Nesta secção, foram tratados vários tipos de nós que representam operações
             if info["type"] == "string":
                 code.append("PUSHI 1")
                 code.append("SUB")
-                code.append("CHARAT")    # retira char code da string
+                code.append("CHARAT")    
             else:
                 code.append(f"PUSHI {info['low_bound']}")
                 code.append("SUB")
-                code.append("LOADN")     # retira elemento de array
+                code.append("LOADN")  
 
 ```
 Importa ainda referir que, no caso de operações sobre strings em que se pretende aceder a uma posição específica, é necessário subtrair uma unidade ao índice desejado. Isto deve-se ao facto de, em Pascal, a indexação de strings começar em 1, enquanto na máquina virtual utilizada, a indexação é feita a partir do 0. Para garantir o acesso correto à posição pretendida, o codegen gera instruções adicionais que subtraem 1 ao valor do índice antes de aceder à string. Esta mesma lógica aplica-se aos arrays, uma vez que, em Pascal, é possível declarar arrays cuja posição inicial não seja 0.
@@ -1082,10 +1074,7 @@ Com esta abordagem, conseguimos gerar *labels* únicas como else1, endif1, else2
 Tendo por base toda esta estrutura, chegamos ao seguinte `codegen.py`:
 ```python
 elif isinstance(node, IfStmtNode):
-        # 1) avalia a condição
         code.extend(generate_code(node.condition, symbol_table))
-
-        # gera IDs e nomes específicos
         n = _new_if_id()
         else_lbl   = f"else{n}"
         endif_lbl  = f"endif{n}"
@@ -1098,10 +1087,10 @@ elif isinstance(node, IfStmtNode):
         else:
             # if com else
             code.append(f"JZ {else_lbl}")
-            # then-branch
+            # then
             code.extend(generate_code(node.then_stmt, symbol_table))
             code.append(f"JUMP {endif_lbl}")
-            # else-branch
+            # else
             code.append(f"{else_lbl}:")
             code.extend(generate_code(node.else_stmt, symbol_table))
             code.append(f"{endif_lbl}:")
@@ -1165,13 +1154,11 @@ Assim sendo, conseguimos gerar labels únicas, como while1, endwhile1, etc, que 
 Desta forma, chegamos ao seguinte `codegen.py`:
 ```python
 elif isinstance(node, WhileStmtNode):
-        # gera IDs e rótulos únicos para o loop
         n = _new_loop_id()
         start_lbl = f"while{n}"
         end_lbl   = f"endwhile{n}"
         # início do loop
         code.append(f"{start_lbl}:")
-        # avalia condição
         code.extend(generate_code(node.condition, symbol_table))
         # se condição for falsa, salta para fim
         code.append(f"JZ {end_lbl}")
@@ -1234,7 +1221,6 @@ Desta forma, atualizamos o `codegen.py` para refeltir esta nova funcionalidade:
 
 ```python
     if isinstance(node, ForStmtNode):
-        # inicialização
         code.extend(generate_code(node.init_assign, symbol_table))
 
         n = _new_loop_id()
@@ -1250,7 +1236,6 @@ Desta forma, atualizamos o `codegen.py` para refeltir esta nova funcionalidade:
         code.append("INFEQ" if node.direction == 'to' else "SUPEQ")
         code.append(f"JZ {end_lbl}")
 
-        # corpo
         code.extend(generate_code(node.body, symbol_table))
 
         # incremento/decremento
@@ -1322,12 +1307,11 @@ def infer_type(node):
             var_id = node.id
             if var_id in symbol_table:
                 var_info = symbol_table[var_id]
-                # Se for acesso a array (ou string), retorna o tipo dos elementos
                 if node.index is not None:
                     if var_info["type"] == "structured":
                         return var_info["elem_type"]
                     elif var_info["type"] == "string":
-                        return "string"  # Strings indexadas retornam caracteres
+                        return "string" 
                     else:
                         return "unknown"
                 return var_info["type"]
